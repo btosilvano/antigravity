@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LightSpeed VT — Visual Direction & Design System</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+  body {
+    font-family: 'Montserrat', -apple-system, sans-serif;
+    background: #EEF2F8;
+    color: #0A1E3D;
+    line-height: 1.7;
+  }
+
+  header {
+    background: linear-gradient(135deg, #0A1E3D 0%, #1252A3 60%, #2B7FE8 100%);
+    color: white;
+    padding: 60px 60px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 60px;
+    background: #EEF2F8;
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .logo-text {
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  h1 span { color: #4DA6FF; font-weight: 600; }
+  .version { font-size: 13px; opacity: 0.5; letter-spacing: 0.15em; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 40px 40px 80px; }
+
+  section {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(77,166,255,0.2);
+    border-radius: 20px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 24px rgba(18,82,163,0.06);
+  }
+
+  h2 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: #2B7FE8;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(43,127,232,0.3), transparent);
+  }
+  .section-num {
+    background: #2B7FE8;
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0A1E3D;
+    margin: 24px 0 10px;
+  }
+  h3:first-of-type { margin-top: 0; }
+
+  p { color: #1A3C6E; margin-bottom: 12px; font-size: 15px; }
+
+  .concept-block {
+    border-left: 3px solid #2B7FE8;
+    padding: 14px 20px;
+    margin: 14px 0;
+    background: rgba(43,127,232,0.05);
+    border-radius: 0 12px 12px 0;
+  }
+  .concept-block strong { color: #1252A3; }
+
+  .three-worlds {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .world-card {
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .world-card.before { background: linear-gradient(135deg, #FFF8F0, #FDEFD8); border: 1px solid rgba(200,169,110,0.4); }
+  .world-card.threshold { background: linear-gradient(135deg, #EEF6FF, #D6EAFF); border: 1px solid rgba(43,127,232,0.3); }
+  .world-card.after { background: linear-gradient(135deg, #E8F4FF, #C8DFFF); border: 1px solid rgba(18,82,163,0.3); }
+  .world-card .world-icon { font-size: 28px; margin-bottom: 8px; }
+  .world-card .world-title { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .world-card.before .world-title { color: #A07040; }
+  .world-card.threshold .world-title { color: #2B7FE8; }
+  .world-card.after .world-title { color: #1252A3; }
+  .world-card p { font-size: 12px; margin: 0; color: #444; }
+
+  .arc-steps { counter-reset: step; }
+  .arc-step {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(43,127,232,0.1);
+  }
+  .arc-step:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #2B7FE8, #1252A3);
+    color: white; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-title { font-weight: 700; color: #0A1E3D; margin-bottom: 2px; }
+  .step-desc { font-size: 14px; color: #1A3C6E; }
+
+  .material-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .material-card {
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid rgba(77,166,255,0.2);
+  }
+  .material-card.glass { background: rgba(200,225,255,0.25); backdrop-filter: blur(10px); }
+  .material-card.liquid { background: linear-gradient(135deg, rgba(18,82,163,0.08), rgba(43,127,232,0.12)); }
+  .material-card.wood { background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(212,180,131,0.2)); border-color: rgba(200,169,110,0.4); }
+  .material-card.objects { background: rgba(255,250,245,0.8); border-color: rgba(200,169,110,0.3); }
+  .material-title { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px; }
+  .material-card.glass .material-title { color: #2B7FE8; }
+  .material-card.liquid .material-title { color: #1252A3; }
+  .material-card.wood .material-title { color: #8B6030; }
+  .material-card.objects .material-title { color: #6B4C20; }
+  .material-card ul { list-style: none; padding: 0; }
+  .material-card li { font-size: 13px; color: #1A3C6E; padding: 3px 0; display: flex; gap: 8px; }
+  .material-card li::before { content: '·'; color: #2B7FE8; }
+
+  .color-palette { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+  .swatch {
+    display: flex; flex-direction: column; align-items: center;
+    width: 90px;
+  }
+  .swatch-color {
+    width: 72px; height: 72px; border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .swatch-name { font-size: 10px; font-weight: 600; text-align: center; color: #0A1E3D; margin-bottom: 2px; }
+  .swatch-hex { font-size: 10px; color: #2B7FE8; font-family: monospace; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th { text-align: left; padding: 10px 14px; background: rgba(43,127,232,0.08); color: #1252A3; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  td { padding: 10px 14px; border-bottom: 1px solid rgba(43,127,232,0.08); color: #1A3C6E; }
+  tr:last-child td { border-bottom: none; }
+  td strong { color: #0A1E3D; }
+
+  .taglines { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .tagline {
+    background: rgba(43,127,232,0.05);
+    border: 1px solid rgba(43,127,232,0.15);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-style: italic;
+    font-size: 14px;
+    color: #1252A3;
+  }
+
+  .layers { counter-reset: layer; margin: 16px 0; }
+  .layer {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(43,127,232,0.15);
+  }
+  .layer:last-child { border-bottom: none; }
+  .layer-bar {
+    height: 6px;
+    border-radius: 3px;
+    flex: 1;
+  }
+  .layer-label { font-size: 13px; color: #1A3C6E; width: 280px; }
+  .layer-num { font-size: 11px; font-weight: 700; color: #2B7FE8; width: 20px; text-align: right; flex-shrink: 0; }
+
+  .prompt-box {
+    background: #0A1E3D;
+    color: #A8D4F5;
+    border-radius: 14px;
+    padding: 24px;
+    font-family: 'Menlo', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .prompt-box::before {
+    content: 'PROMPT TEMPLATE';
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: #2B7FE8;
+    font-family: -apple-system, sans-serif;
+  }
+
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .keyword {
+    background: rgba(43,127,232,0.1);
+    border: 1px solid rgba(43,127,232,0.25);
+    color: #1252A3;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .avoid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+  .avoid-item {
+    background: rgba(220,50,50,0.04);
+    border: 1px solid rgba(220,50,50,0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #6B1A1A;
+  }
+
+  .css-block {
+    background: #F5F8FF;
+    border: 1px solid rgba(43,127,232,0.15);
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-family: 'Menlo', 'Monaco', monospace;
+    font-size: 12px;
+    color: #1252A3;
+    line-height: 2;
+    margin: 12px 0;
+  }
+  .css-prop { color: #0A1E3D; }
+  .css-val { color: #2B7FE8; }
+
+  .component-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #1252A3;
+    margin: 20px 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(43,127,232,0.15);
+  }
+
+  .motion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .motion-card {
+    background: rgba(43,127,232,0.04);
+    border: 1px solid rgba(43,127,232,0.15);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .motion-card h4 { font-size: 13px; font-weight: 700; color: #1252A3; margin-bottom: 8px; }
+  .motion-card p { font-size: 13px; margin: 0; }
+
+  .lsvt-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.45em;
+    color: #1252A3;
+    text-align: center;
+    padding: 24px;
+    background: rgba(43,127,232,0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(43,127,232,0.15);
+    margin: 16px 0;
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px;
+    font-size: 12px;
+    color: rgba(10,30,61,0.4);
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-text">LightSpeed VT · Brand & Design System</div>
+  <h1><span>VISUAL DIRECTION</span> & DESIGN SYSTEM</h1>
+  <div class="version">VERSION 1.0 · MARCH 2026</div>
+</header>
+
+<main>
+
+  <!-- SECTION 1 -->
+  <section>
+    <h2><span class="section-num">1</span> The Core Concept: "From Chaos to Light"</h2>
+
+    <div class="concept-block">
+      <strong>The Before:</strong> Physical training materials — DVDs, binders, printed manuals, spiral notebooks, VHS tapes, presentation folders, books — scattered across a surface. Tangible. Heavy. Disorganized. Old.
+    </div>
+    <div class="concept-block">
+      <strong>The Transformation:</strong> These objects begin to move. They dissolve, flow like liquid, and rise. Gravity reverses. Content becomes light.
+    </div>
+    <div class="concept-block">
+      <strong>The After:</strong> A luminous glass interface. Organized. Instant. Clean. Everything is now inside LightSpeed VT.
+    </div>
+
+    <p style="margin-top:16px;">This is what the company does — it takes the chaos of traditional corporate training and transforms it into a complete, instant training department. <strong>The visual must feel like that.</strong></p>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section>
+    <h2><span class="section-num">2</span> The Visual Metaphor System</h2>
+
+    <h3>The Three Worlds</h3>
+    <div class="three-worlds">
+      <div class="world-card before">
+        <div class="world-icon">📦</div>
+        <div class="world-title">The Physical</div>
+        <p>DVDs, binders, manuals, folders. Heavy, warm, tactile, dated.</p>
+      </div>
+      <div class="world-card threshold">
+        <div class="world-icon">💧</div>
+        <div class="world-title">The Threshold</div>
+        <p>Liquid blue, flowing glass, light beams. Motion, energy, speed.</p>
+      </div>
+      <div class="world-card after">
+        <div class="world-icon">✦</div>
+        <div class="world-title">The Digital</div>
+        <p>Glass panels, clean UI, organized widgets. Light, clear, instant, powerful.</p>
+      </div>
+    </div>
+
+    <h3>The Transformation Arc</h3>
+    <div class="arc-steps">
+      <div class="arc-step"><div class="step-num">1</div><div><div class="step-title">Scatter</div><div class="step-desc">Objects rest on a warm wood/desk surface, slightly chaotic, casting soft shadows</div></div></div>
+      <div class="arc-step"><div class="step-num">2</div><div><div class="step-title">Stir</div><div class="step-desc">Objects begin to vibrate, pages rustle, light appears at the edges</div></div></div>
+      <div class="arc-step"><div class="step-num">3</div><div><div class="step-title">Dissolve</div><div class="step-desc">Materials break apart into blue liquid droplets and light particles</div></div></div>
+      <div class="arc-step"><div class="step-num">4</div><div><div class="step-title">Flow</div><div class="step-desc">The liquid rises, swirls, and takes shape — glass panels emerge</div></div></div>
+      <div class="arc-step"><div class="step-num">5</div><div><div class="step-title">Crystallize</div><div class="step-desc">The glass solidifies into the LightSpeed VT interface</div></div></div>
+      <div class="arc-step"><div class="step-num">6</div><div><div class="step-title">Illuminate</div><div class="step-desc">The "lightspeed" moment — a beam crosses the frame and everything is organized, bright, instant</div></div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section>
+    <h2><span class="section-num">3</span> Material Language</h2>
+    <div class="material-grid">
+      <div class="material-card glass">
+        <div class="material-title">Glass · Primary</div>
+        <ul>
+          <li>Frosted/translucent, high edge refraction</li>
+          <li>Rounded corners 16–32px</li>
+          <li>rgba(200,225,255,0.35) base tint</li>
+          <li>Blue edge glow: #4DA6FF → #1E6FD9</li>
+          <li>Backdrop blur 12–20px always</li>
+          <li>Can curl/bend/roll before settling</li>
+        </ul>
+      </div>
+      <div class="material-card liquid">
+        <div class="material-title">Liquid · Energy (SUBTLE)</div>
+        <ul>
+          <li>Deep cobalt → electric blue → ice blue</li>
+          <li>#1252A3 → #2B7FE8 → #A8D4F5</li>
+          <li>Gentle pool at the base — NOT splashing or overflowing</li>
+          <li>Contained inside and beneath glass — like liquid filling a vessel</li>
+          <li>Calm ripples and subtle wave crests only — not a tsunami</li>
+          <li>Casts soft blue caustic reflections on wood surface</li>
+          <li>⚠️ The glass is the hero. Liquid is the soul beneath it.</li>
+        </ul>
+      </div>
+      <div class="material-card wood">
+        <div class="material-title">Wood · Grounding</div>
+        <ul>
+          <li>Blonde oak / bamboo tone</li>
+          <li>#C8A96E to #D4B483</li>
+          <li>Same rounded-rect language as glass</li>
+          <li>Always the foundation — glass rises from it</li>
+          <li>Matte finish, fine grain visible</li>
+          <li>Soft shadows underneath</li>
+        </ul>
+      </div>
+      <div class="material-card objects">
+        <div class="material-title">Physical Objects · "Before"</div>
+        <ul>
+          <li>DVDs stacked, binders open, notebooks</li>
+          <li>Training manuals, VHS tapes, folders</li>
+          <li>Certificates, books with highlighted pages</li>
+          <li>Warm tones, slightly worn, heavy shadows</li>
+          <li>Always start scattered — never arranged</li>
+          <li>Dissolve into blue liquid on transform</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section>
+    <h2><span class="section-num">4</span> Color System</h2>
+    <div class="color-palette">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2B7FE8;"></div>
+        <div class="swatch-name">LightSpeed Blue</div>
+        <div class="swatch-hex">#2B7FE8</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1252A3;"></div>
+        <div class="swatch-name">Deep Cobalt</div>
+        <div class="swatch-hex">#1252A3</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4DA6FF;"></div>
+        <div class="swatch-name">Electric Blue</div>
+        <div class="swatch-hex">#4DA6FF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#A8D4F5;"></div>
+        <div class="swatch-name">Ice Blue</div>
+        <div class="swatch-hex">#A8D4F5</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F5F8FF; border:1px solid #dde;"></div>
+        <div class="swatch-name">Pearl White</div>
+        <div class="swatch-hex">#F5F8FF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C8A96E;"></div>
+        <div class="swatch-name">Wood Warm</div>
+        <div class="swatch-hex">#C8A96E</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#0A1E3D;"></div>
+        <div class="swatch-name">Deep Navy</div>
+        <div class="swatch-hex">#0A1E3D</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#EEF2F8; border:1px solid #dde;"></div>
+        <div class="swatch-name">Studio BG</div>
+        <div class="swatch-hex">#EEF2F8</div>
+      </div>
+    </div>
+
+    <h3>Lighting Setup (all 3D scenes)</h3>
+    <table>
+      <tr><th>Source</th><th>Type</th><th>Position</th><th>Effect</th></tr>
+      <tr><td><strong>Primary</strong></td><td>Warm soft area light</td><td>Top-right</td><td>Studio window feel, warm ambient</td></tr>
+      <tr><td><strong>Secondary</strong></td><td>Cool blue emission</td><td>From glass itself</td><td>Self-illuminating digital energy</td></tr>
+      <tr><td><strong>Ground</strong></td><td>Caustic blue reflections</td><td>Below glass</td><td>Rippling blue light on surface</td></tr>
+    </table>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section>
+    <h2><span class="section-num">5</span> Typography</h2>
+
+    <h3>Brand Name Treatment</h3>
+    <div class="lsvt-name">L I G H T S P E E D &nbsp; V T</div>
+    <p><strong>Montserrat</strong> · Wide letter-spacing (0.3–0.5em) · Light (300) or Regular (400) weight · Always uppercase · The spacing creates the "speed" — stretched across space like a light trail.</p>
+
+    <h3 style="margin-top:20px;">Weight Scale</h3>
+    <table>
+      <tr><th>Weight</th><th>Use</th><th>Example</th></tr>
+      <tr><td><strong>900 Black ★</strong></td><td>Hero impact headlines — the signature weight</td><td style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:17px;text-transform:uppercase;">INSTANT TRAINING</td></tr>
+      <tr><td><strong>700 Bold</strong></td><td>Section headlines, widget titles, CTAs</td><td style="font-family:'Montserrat',sans-serif;font-weight:700;">LightSpeed VT</td></tr>
+      <tr><td><strong>600 SemiBold</strong></td><td>Card titles, labels, nav</td><td style="font-family:'Montserrat',sans-serif;font-weight:600;">Interactive Training</td></tr>
+      <tr><td><strong>400 Regular</strong></td><td>Body text, descriptions</td><td style="font-family:'Montserrat',sans-serif;font-weight:400;">Your training department, instant.</td></tr>
+      <tr><td><strong>300 Light</strong></td><td>Spaced display titles, captions</td><td style="font-family:'Montserrat',sans-serif;font-weight:300;letter-spacing:0.3em;">L I G H T S P E E D</td></tr>
+    </table>
+
+    <h3 style="margin-top:24px;">The Two-Tone Headline Technique</h3>
+    <p>A core brand signature — split a single headline between White + Blue to create emphasis and rhythm. Always uppercase, always Montserrat Black (900). White = setup/context. Blue = the punch.</p>
+    <div style="background:#000;border-radius:14px;padding:28px 32px;margin:12px 0;">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:28px;text-transform:uppercase;line-height:1.1;">
+        <span style="color:#fff;">GET AN INSTANT </span><span style="color:#2B7FE8;">TRAINING<br>DEPARTMENT</span>
+      </div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;text-transform:uppercase;margin-top:20px;line-height:1.1;">
+        <span style="color:#fff;">WE BUILD IT ONCE. </span><span style="color:#2B7FE8;">IT RUNS EVERY DAY.</span>
+      </div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;text-transform:uppercase;margin-top:14px;line-height:1.1;">
+        <span style="color:#fff;">WHAT </span><span style="color:#2B7FE8;">YOU GET</span>
+      </div>
+    </div>
+
+    <h3>Taglines</h3>
+    <div class="taglines">
+      <div class="tagline">"Everything you trained on. Now in one place."</div>
+      <div class="tagline">"Your entire training department. At lightspeed."</div>
+      <div class="tagline">"From the shelf to the screen. Instantly."</div>
+      <div class="tagline">"The future of training moves at lightspeed."</div>
+    </div>
+
+    <h3>UI Text (inside glass panels)</h3>
+    <p><strong>Montserrat</strong> — Bold (700) for widget titles · SemiBold (600) for data · Regular (400) for body · Light (300) for labels. Color: <code style="background:rgba(43,127,232,0.1);padding:2px 6px;border-radius:4px;color:#1252A3;">#1A3C6E</code> — never pure black on glass.</p>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section>
+    <h2><span class="section-num">6</span> Composition Rules</h2>
+
+    <h3>The Layering System (back to front)</h3>
+    <div class="layers">
+      <div class="layer"><span class="layer-num">8</span><span class="layer-label">Light rays / lens flare (foreground atmospheric)</span><div class="layer-bar" style="background:linear-gradient(to right,rgba(255,230,150,0.6),transparent);"></div></div>
+      <div class="layer"><span class="layer-num">7</span><span class="layer-label">Floating notification / widget cards</span><div class="layer-bar" style="background:rgba(200,225,255,0.6);border:1px solid rgba(77,166,255,0.4);"></div></div>
+      <div class="layer"><span class="layer-num">6</span><span class="layer-label">Glass UI panel (main screen)</span><div class="layer-bar" style="background:rgba(43,127,232,0.3);"></div></div>
+      <div class="layer"><span class="layer-num">5</span><span class="layer-label">Glass base panel</span><div class="layer-bar" style="background:rgba(43,127,232,0.15);"></div></div>
+      <div class="layer"><span class="layer-num">4</span><span class="layer-label">Liquid pool and waves</span><div class="layer-bar" style="background:linear-gradient(to right,#1252A3,#2B7FE8);"></div></div>
+      <div class="layer"><span class="layer-num">3</span><span class="layer-label">Scattered physical objects (before state)</span><div class="layer-bar" style="background:linear-gradient(to right,#C8A96E,#D4B483);"></div></div>
+      <div class="layer"><span class="layer-num">2</span><span class="layer-label">Surface (wood base)</span><div class="layer-bar" style="background:#C8A96E;"></div></div>
+      <div class="layer"><span class="layer-num">1</span><span class="layer-label">Background (pearl white)</span><div class="layer-bar" style="background:#EEF2F8;border:1px solid #dde;"></div></div>
+    </div>
+
+    <h3>Floating Cards Content (LightSpeed VT examples)</h3>
+    <p>Small glassmorphism chips floating off the glass panel edges: "Sales Training · 14 modules" · "New Employee Onboarding · Complete" · "Compliance 2024 · Assigned to 47 users" · "Task Review" · "Data Sync"</p>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section>
+    <h2><span class="section-num">7</span> Motion Principles</h2>
+    <div class="motion-grid">
+      <div class="motion-card">
+        <h4>Gathering Phase</h4>
+        <p>Objects slowly float/drift toward center — anticipation. Easing: <code>ease-in</code>. Slow start, accelerating.</p>
+      </div>
+      <div class="motion-card">
+        <h4>Burst Phase</h4>
+        <p>Sudden acceleration — everything snaps into place at lightspeed. <code>cubic-bezier(0.25, 0, 0, 1)</code></p>
+      </div>
+      <div class="motion-card">
+        <h4>The Light Sweep ✦</h4>
+        <p>Signature move: warm-white beam travels horizontally across frame at transformation completion. This IS the "lightspeed" moment.</p>
+      </div>
+      <div class="motion-card">
+        <h4>Liquid Idle State</h4>
+        <p>Even in the "after" state, liquid gently undulates. Pools → ripples (2–3 cycles) → calms. Always alive. <code>ease-in-out</code> loop.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section>
+    <h2><span class="section-num">8</span> AI Image Generation Guidance</h2>
+
+    <h3>Master Prompt Template (Corrected — Subtle Liquid)</h3>
+    <div class="prompt-box">Photorealistic 3D render of scattered corporate training materials —
+DVDs, binders, printed manuals, spiral notebooks — resting on a warm
+light oak wooden surface. A large frosted glass panel rises from the wood,
+displaying the LightSpeed VT training dashboard interface. At the base of
+the glass panel, calm blue liquid gently pools with subtle ripples —
+contained within and beneath the glass like water in an aquarium, NOT
+splashing or overflowing. Glass has soft rounded corners, thin electric
+blue edge glow, translucent frosted surface. Soft caustic blue light
+reflections on the wood surface below. Warm soft light from upper right.
+Cool blue self-emission from glass. Pearl white studio background (#F5F8FF).
+Small glassmorphism notification cards float off the right edge.
+3/4 isometric camera angle. Cinema4D render, Octane, ultra-detailed,
+photorealistic. No splashing water, no water droplets flying.</div>
+
+    <h3>Always Include These Keywords</h3>
+    <div class="keywords">
+      <span class="keyword">glassmorphism</span>
+      <span class="keyword">liquid simulation</span>
+      <span class="keyword">caustics</span>
+      <span class="keyword">subsurface scattering</span>
+      <span class="keyword">photorealistic 3D</span>
+      <span class="keyword">isometric</span>
+      <span class="keyword">warm studio lighting</span>
+      <span class="keyword">blue liquid</span>
+      <span class="keyword">frosted glass</span>
+      <span class="keyword">rounded corners</span>
+      <span class="keyword">wood base</span>
+      <span class="keyword">pearl white background</span>
+      <span class="keyword">Cinema4D</span>
+      <span class="keyword">Octane render</span>
+    </div>
+
+    <h3>What to Avoid</h3>
+    <div class="avoid">
+      <div class="avoid-item">❌ Liquid splashing/overflowing the glass</div>
+      <div class="avoid-item">❌ Circuit boards, binary, holograms</div>
+      <div class="avoid-item">❌ Sharp corners on glass</div>
+      <div class="avoid-item">❌ Flat liquid (no depth/waves)</div>
+      <div class="avoid-item">❌ Multiple competing light sources</div>
+      <div class="avoid-item">❌ Overly chaotic — chaos is controlled</div>
+      <div class="avoid-item">❌ Aggressive wave physics — keep liquid calm</div>
+      <div class="avoid-item">❌ Liquid as the main subject — glass is the hero</div>
+    </div>
+
+    <h3 style="margin-top:24px;">Negative Prompts (ChatGPT / Midjourney)</h3>
+    <div class="prompt-box" style="font-size:12px;">no splashing water, no overflowing liquid, no tsunami waves, no water droplets flying,
+no circuit boards, no binary code, no holograms, no neon colors,
+no sharp edges on glass, no pure black background (unless dark mode variant),
+no text distortion, no blurry interface, no cartoon style, no illustration style,
+no cluttered background, no dramatic storm lighting</div>
+
+    <h3>Scene Variations + Full Prompt Examples</h3>
+    <table>
+      <tr><th>Scene</th><th>Description</th></tr>
+      <tr><td><strong>The Origin</strong></td><td>Only physical objects on wood. No glass yet. DVDs, binders, manuals. Slightly melancholy.</td></tr>
+      <tr><td><strong>The Moment</strong></td><td>Objects mid-dissolution into blue liquid. Glass panel just beginning to form.</td></tr>
+      <tr><td><strong>The Reveal (Light)</strong></td><td>Glass panel fully formed, LightSpeed VT UI visible, calm liquid pool below. Pearl white background.</td></tr>
+      <tr><td><strong>The Reveal (Dark)</strong></td><td>Same panel, dark mode. Deep navy/midnight background, glass glows from within.</td></tr>
+      <tr><td><strong>The Dashboard</strong></td><td>Clean glass UI panel only. Interface floating above wood. No transformation.</td></tr>
+      <tr><td><strong>Speed Burst</strong></td><td>Motion-blurred objects flying toward glass panel. Light streak across frame.</td></tr>
+      <tr><td><strong>The Stack</strong></td><td>Multiple glass layers exploded apart — showing UI layers/depth.</td></tr>
+      <tr><td><strong>Dark Mode Hero</strong></td><td>Deep midnight background, glass panel self-illuminated, electric blue edges glow, liquid softly lit from below.</td></tr>
+    </table>
+
+    <h3 style="margin-top:28px;">Prompt: Light Mode — Subtle Liquid (Corrected)</h3>
+    <div class="prompt-box">Photorealistic 3D render, isometric 3/4 view. A frosted glass panel displaying the LightSpeed VT
+dashboard interface, tilted slightly toward the viewer, sitting on a light natural oak wood base.
+At the bottom of the glass panel, calm blue liquid gently pools — subtle ripples only, like water
+in a still aquarium, not splashing. The liquid is contained inside and beneath the glass. Deep cobalt
+and electric blue tones in the liquid. Glass has soft rounded corners, translucent frosted surface,
+thin blue glowing edge border. Scattered nearby: a training manual, two CDs, a spiral notebook —
+on the wood surface, suggesting the "before." Warm soft light from upper right. Cool blue
+self-emission from glass. Pearl white studio background (#F5F8FF). Small glassmorphism
+notification cards float off the right edge of the panel. Ultra-detailed, Cinema4D style, Octane
+render, photorealistic. No splashing water, no flying droplets.</div>
+
+    <h3 style="margin-top:28px;">Prompt: Dark Mode Hero</h3>
+    <div class="prompt-box">Photorealistic 3D render, isometric 3/4 view. A frosted glass panel displaying the LightSpeed VT
+dashboard interface, floating in a deep midnight blue environment (#0A1E3D to #050D1A gradient
+background). The glass panel glows from within — electric blue (#4DA6FF) edge glow, soft blue
+light emission casting onto the dark surface below. At the base of the glass, calm blue liquid pools
+with subtle gentle ripples — contained, not splashing. The liquid is richly saturated cobalt blue,
+self-illuminated. The wood base has a darker tone — charcoal-stained oak. Small glassmorphism
+notification cards float off the edges, glowing subtly. Dramatic but clean — the glass is a beacon
+of light in dark space. Lens flare from upper right. Ultra-detailed, Cinema4D, Octane render.
+No neon, no circuit boards, no harsh colors.</div>
+
+    <h3 style="margin-top:28px;">Prompt: The Origin (Before State)</h3>
+    <div class="prompt-box">Photorealistic 3D render, top-down isometric view. A warm light oak wooden board on a clean
+pearl white surface. Scattered on the board: an open 3-ring binder with printed training pages,
+2-3 DVDs with "Training Manual" labels, a spiral notebook with handwritten notes, a printed
+corporate training guide, a VHS tape, a folder with loose papers. Objects are slightly chaotic —
+not perfectly arranged. Warm natural lighting from upper right. Long soft shadows. No glass panels,
+no liquid, no digital elements. The feeling is: organized chaos from the physical world, about to
+change. Photorealistic, Cinema4D style, soft studio lighting.</div>
+
+    <h3 style="margin-top:28px;">Prompt: The Stack (Exploded Layers)</h3>
+    <div class="prompt-box">Photorealistic 3D render, isometric view. Three frosted glass panels of the same size, stacked
+and slightly separated — exploded layer view, hovering above a light oak wooden base. Each glass
+layer is translucent with rounded corners and a subtle blue edge glow. The middle layer shows
+the LightSpeed VT dashboard UI. The front layer is nearly clear glass. The back layer is slightly
+frosted. Between the panels: calm blue liquid visible as a thin glowing layer. Warm light from
+upper right. Pearl white background. Clean, architectural, precise. No splashing, no chaos.
+Ultra-detailed, Cinema4D, Octane render, photorealistic.</div>
+
+  </section>
+
+  <!-- SECTION 8B: Dark Mode -->
+  <section>
+    <h2><span class="section-num" style="background:#0A1E3D;">☾</span> Dark Mode Direction</h2>
+
+    <p>Dark mode is a valid and powerful brand direction for LightSpeed VT. It creates contrast, drama, and makes the glass + liquid elements glow with maximum impact. Use it for:</p>
+
+    <table>
+      <tr><th>Context</th><th>Dark Mode Treatment</th></tr>
+      <tr><td><strong>Hero banners</strong></td><td>Deep midnight (#0A1E3D) or near-black (#05080F) — glass panel glows as focal point</td></tr>
+      <tr><td><strong>Sales presentations</strong></td><td>Dark background slides where the glass UI "emerges from darkness"</td></tr>
+      <tr><td><strong>Social media</strong></td><td>High contrast: dark bg + electric blue glass edge + white text</td></tr>
+      <tr><td><strong>Video intros</strong></td><td>Open on black, light sweep reveals glass panel and LightSpeed VT logo</td></tr>
+    </table>
+
+    <h3 style="margin-top:20px;">Dark Mode Color Adjustments</h3>
+    <div class="css-block" style="margin-top:8px;">
+      <span class="css-prop">background:</span> <span class="css-val">#050D1A to #0A1E3D</span>; <span style="color:#666;">/* deep midnight */</span><br>
+      <span class="css-prop">glass-tint:</span> <span class="css-val">rgba(10, 40, 100, 0.4)</span>; <span style="color:#666;">/* deeper blue tint */</span><br>
+      <span class="css-prop">glass-border:</span> <span class="css-val">rgba(77, 166, 255, 0.7)</span>; <span style="color:#666;">/* brighter edge glow */</span><br>
+      <span class="css-prop">glass-shadow:</span> <span class="css-val">0 0 40px rgba(43, 127, 232, 0.4)</span>; <span style="color:#666;">/* outer glow */</span><br>
+      <span class="css-prop">liquid-brightness:</span> <span class="css-val">+30%</span>; <span style="color:#666;">/* more saturated in dark */</span><br>
+      <span class="css-prop">text:</span> <span class="css-val">#E8F4FF</span>; <span style="color:#666;">/* ice white */</span>
+    </div>
+
+    <p style="margin-top:12px;"><strong>Key rule for dark mode:</strong> The liquid becomes more luminous — it's now the primary light source in the scene. The glass glows from within like a lit panel. The wood base goes charcoal or disappears into shadow.</p>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section>
+    <h2><span class="section-num">9</span> Design System — CSS Values</h2>
+
+    <div class="component-label">Glass Card</div>
+    <div class="css-block">
+      <span class="css-prop">background:</span> <span class="css-val">rgba(255, 255, 255, 0.6)</span>;<br>
+      <span class="css-prop">backdrop-filter:</span> <span class="css-val">blur(16px)</span>;<br>
+      <span class="css-prop">border:</span> <span class="css-val">1px solid rgba(77, 166, 255, 0.3)</span>;<br>
+      <span class="css-prop">border-radius:</span> <span class="css-val">16px</span>;<br>
+      <span class="css-prop">box-shadow:</span> <span class="css-val">0 4px 24px rgba(18, 82, 163, 0.12)</span>;
+    </div>
+
+    <div class="component-label">Primary Button</div>
+    <div class="css-block">
+      <span class="css-prop">background:</span> <span class="css-val">#2B7FE8</span>;<br>
+      <span class="css-prop">color:</span> <span class="css-val">#FFFFFF</span>;<br>
+      <span class="css-prop">border-radius:</span> <span class="css-val">10px</span>;<br>
+      <span class="css-prop">/* hover */ background:</span> <span class="css-val">#4DA6FF</span>;<br>
+      <span class="css-prop">/* hover */ box-shadow:</span> <span class="css-val">0 0 20px rgba(77, 166, 255, 0.4)</span>;
+    </div>
+
+    <div class="component-label">Hero Glass Panel</div>
+    <div class="css-block">
+      <span class="css-prop">background:</span> <span class="css-val">rgba(200, 225, 255, 0.25)</span>;<br>
+      <span class="css-prop">backdrop-filter:</span> <span class="css-val">blur(20px) saturate(1.4)</span>;<br>
+      <span class="css-prop">border:</span> <span class="css-val">1.5px solid rgba(77, 166, 255, 0.5)</span>;<br>
+      <span class="css-prop">border-radius:</span> <span class="css-val">24px</span>;
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section>
+    <h2><span class="section-num">10</span> Brand Voice → Visual Alignment</h2>
+    <table>
+      <tr><th>Brand Message</th><th>Visual Translation</th></tr>
+      <tr><td><strong>"Instant training department"</strong></td><td>Glass panel appearing fully-formed from chaos in one motion</td></tr>
+      <tr><td><strong>"All your content in one place"</strong></td><td>Physical objects from many sources converging into one glass panel</td></tr>
+      <tr><td><strong>"Lightspeed"</strong></td><td>Light sweep, speed burst, name spelled L I G H T S P E E D in spaced type</td></tr>
+      <tr><td><strong>"Modern, not overwhelming"</strong></td><td>Clean pearl background, organized widgets, controlled composition</td></tr>
+      <tr><td><strong>"Transforms your existing content"</strong></td><td>DVDs/binders/books visibly converting — source material is recognizable</td></tr>
+      <tr><td><strong>"Video-first training"</strong></td><td>Play button icons prominent in cards, video thumbnails in UI widgets</td></tr>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  LightSpeed VT Visual Direction v1.0 · March 2026 · Use to brief AI image generators, 3D artists, motion designers, and UI/UX designers
+</footer>
+
+</body>
+</html>

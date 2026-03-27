@@ -1,0 +1,326 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+.desktop.portrait #video-container{
+  max-height: 576px;
+}
+
+
+.lsvt-theater.portrait #video-container{
+  max-height: 100%
+  }
+
+#videoplayer{
+  transition:opacity 1s;
+}
+
+.portrait.desktop.main-container{
+  overflow: hidden;
+}
+
+#videoplayer.mobile div.lsvt-poster-container{
+  background-size: contain!important;
+  background-position: center center!important;
+}
+
+
+.main-container.mobile.portrait{
+  box-shadow: none!important;
+  height: 100vh!important;
+  /*max-height: calc(100vh - 80px)!important;*/
+}
+
+@media screen and (orientation:landscape) {
+    /* Landscape styles */
+    .main-container.mobile.portrait{
+        box-shadow: none!important;
+        height: 75vh!important;
+        /*max-height: calc(100vh - 80px)!important;*/
+      }
+    }
+
+    @media screen and (orientation:portrait) {
+        /* Landscape styles */
+        .main-container.mobile.portrait{
+            box-shadow: none!important;
+            height: 75vh!important;
+            max-height: 75vh!important;
+          }
+        }  
+
+.mobile.portrait #videoplayer #video-container{
+  max-height: calc(100vh - 80px)!important;
+}
+
+.safari.mobile .Spacer{
+  display: none;
+
+}
+
+.safari .main-container.mobile.landscap{
+  box-shadow: none!important;
+  height: 75vh!important;
+  max-height: 75vh!important;
+}
+
+.safari .mobile.portrait #videoplayer #video-container{
+  /*max-height: 75vh!important;*/
+}
+.PosterBG{
+  background-position: center center!important;
+}
+
+
+.main-container.landscape{
+    height:auto!important;
+}
+
+.mobile .HeaderBar{
+  margin-bottom: 0!important;
+}
+
+
+
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 700;
+}
+
+.topnav {
+    font-size: 14px;
+}
+
+.lead {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.displayAnswerButton{
+ font-family: Montserrat,sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.intro-header {
+    padding-top: 20px;
+    /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
+    padding-bottom: 0px;
+    text-align: center;
+    color: #ffffff;
+    /*background: url(../img/intro-bg.jpg) no-repeat center center;*/
+    background-size: cover;
+}
+
+.intro-message {
+    position: relative;
+    padding-top: 3%;
+    padding-bottom: 0%;
+    height: 100%;
+}
+
+.intro-message>h1 {
+    margin: 0 0 20px 0;
+    color: #ffffff;
+    /*text-shadow: 2px 2px 3px rgba(11,73,104,1);*/
+    font-size: 3em;
+}
+
+.intro-divider {
+    width: 400px;
+    border-top: 1px solid #b6b6b6;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.intro-message>h3 {
+    color: #ffffff;
+    font-size: 1em;
+    /*text-shadow: 2px 2px 3px rgba(11,73,104,1);*/
+}
+
+
+
+
+/* Float */
+
+.hvr-float {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+
+.hvr-float:hover, .hvr-float:focus, .hvr-float:active {
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+}
+
+@media(max-width:767px) {
+    .theoplayer.theo-style-1 {
+        /*height:267px !important;*/
+    }
+    .intro-message {
+        padding-bottom: 15%;
+    }
+    .intro-message>h1 {
+        font-size: 2em;
+    }
+    ul.intro-social-buttons>li {
+        display: block;
+        margin-bottom: 20px;
+        padding: 0;
+    }
+    ul.intro-social-buttons>li:last-child {
+        margin-bottom: 0;
+    }
+    .intro-divider {
+        width: 100%;
+    }
+}
+
+.network-name {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.content-section-a {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+}
+
+.content-section-b {
+    padding: 50px 0;
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.section-heading {
+    margin-bottom: 30px;
+}
+
+.section-heading-spacer {
+    float: left;
+    width: 200px;
+    border-top: 3px solid #e7e7e7;
+}
+
+.banner {
+    padding: 100px 0;
+    color: #f8f8f8;
+    background-color: #b6b6b6;
+    /*background: url(../img/banner-bg.jpg) no-repeat center center;*/
+    background-size: cover;
+}
+
+.banner h2 {
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    font-size: 3em;
+}
+
+.banner ul {
+    margin-bottom: 0;
+}
+
+.banner-social-buttons {
+    float: right;
+    margin-top: 0;
+}
+
+@media(max-width:1199px) {
+    ul.banner-social-buttons {
+        float: left;
+        margin-top: 15px;
+    }
+}
+
+@media(max-width:767px) {
+    .theoplayer.theo-style-1 {
+        /*height:267px !important;*/
+    }
+    .banner h2 {
+        margin: 0;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+        font-size: 3em;
+    }
+    ul.banner-social-buttons>li {
+        display: block;
+        margin-bottom: 20px;
+        padding: 0;
+    }
+    ul.banner-social-buttons>li:last-child {
+        margin-bottom: 0;
+    }
+}
+
+footer {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+}
+
+p.copyright {
+    margin: 15px 0 0;
+}
+
+.theoplayer.theo-style-1 {
+    /*height:425px*/
+}
+
+.vjs-poster {
+    background-size: contain !important;
+}
+
+.v1 .vjs-control-bar {
+    height: 30px !important;
+}
+.vjs-default-skin .vjs-progress-holder .vjs-load-progress, .vjs-default-skin .vjs-progress-holder .vjs-play-progress{
+max-width: 100% !important;
+}
+
+.logger {
+    margin-top: -35px;
+    background: #272822;
+    color: #7fe22e;
+    /* border: 1px solid black; */
+    /* position: absolute;*/
+    text-align: left;
+    width: 56%;
+    height: 134px;
+    display: none;
+    overflow: auto;
+    font-family: "Lucida Console", "Lucida Sans Typewriter", monaco, "Bitstream Vera Sans Mono", monospace;
+    font-size: 11px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    padding: 10px;
+}
+
+._2ZbAVMpD {
+  /*  background: none !important;
+    color: transparent !important;*/
+}
+#videoplayer{
+/*height: 576px;*/
+/*width:1024px;*/
+margin:0 auto;
+/*
+max-width: 767px !important;
+max-height:431px !important;*/
+}
+
+.vjs-control-bar{visibility: hidden;}
+/* iPhone landscape and iPad portrait */

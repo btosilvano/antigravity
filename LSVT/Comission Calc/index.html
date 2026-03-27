@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSVT Commission Simulator v2</title>
+
+    <style>
+    :root {
+        --bg-color: #030406;
+        --cyan: #279ed8;
+        --cyan-hover: #35b0eb;
+        --cyan-glow: rgba(39, 158, 216, 0.4);
+        --text-main: #ffffff;
+        --text-muted: #a0aab2;
+        --panel-bg: rgba(15, 20, 25, 0.7);
+        --panel-border: rgba(255, 255, 255, 0.08);
+        --input-bg: rgba(0, 0, 0, 0.5);
+        
+        /* Year colors adjusted for dark mode */
+        --yr-bg-1: rgba(39, 158, 216, 0.05); /* Cyan tint */
+        --yr-bg-2: rgba(226, 199, 123, 0.05); /* Gold tint */
+        --yr-bg-3: rgba(46, 204, 113, 0.05); /* Green tint */
+        
+        --yr-fg-1: #90d4ff;
+        --yr-fg-2: #ffeab0;
+        --yr-fg-3: #acf5c6;
+        
+        --header-bg: rgba(0, 0, 0, 0.85);
+        --row-even: rgba(255, 255, 255, 0.02);
+        --row-odd: rgba(255, 255, 255, 0.0);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg-color);
+    }
+
+    .lsvt-wrapper {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex; flex-direction: column; overflow-x: hidden;
+        position: relative;
+        padding: 0; margin: 0;
+    }
+
+    .lsvt-wrapper .app-bg-grid {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+        background-size: 20px 20px;
+        z-index: 0; pointer-events: none;
+    }
+
+    .lsvt-wrapper .app-header {
+        text-align: center; padding: 2.5rem 1rem 1.5rem; position: relative; z-index: 10;
+    }
+    .lsvt-wrapper .logo {
+        display: inline-flex; align-items: center; justify-content: center; gap: 15px;
+    }
+    .lsvt-wrapper .logo-img {
+        height: 45px; 
+        object-fit: contain;
+    }
+    .lsvt-wrapper .app-subtitle {
+        font-size: 1.8rem; font-weight: 800; color: var(--text-muted); letter-spacing: 2px;
+        border-left: 2px solid rgba(255,255,255,0.2); padding-left: 15px;
+    }
+    .lsvt-wrapper .tagline { font-size: 1.1rem; color: var(--text-muted); margin-top: 15px; font-weight: 500; }
+
+    .lsvt-wrapper .container {
+        max-width: 1800px; width: 100%; margin: 0 auto; padding: 0 20px 40px;
+        display: flex; flex-direction: column; gap: 25px; flex: 1; z-index: 10; position: relative;
+    }
+
+    .lsvt-wrapper .glass-panel {
+        background: var(--panel-bg); border: 1px solid var(--panel-border);
+        border-radius: 16px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+        padding: 25px; box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+        display: flex; flex-direction: column; height: 100%;
+    }
+
+    .lsvt-wrapper .panel-header-flex { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+    .lsvt-wrapper .header-info h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 5px; color: #fff !important; }
+    .lsvt-wrapper .header-info h2 span { color: var(--cyan) !important; }
+    .lsvt-wrapper .header-info p { color: var(--cyan) !important; font-weight: 600; font-size: 0.95rem; }
+
+    .lsvt-wrapper .btn {
+        padding: 10px 22px; border: none; border-radius: 30px; font-family: inherit; font-weight: 800;
+        font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+        transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+    }
+    .lsvt-wrapper .btn-primary { background: var(--cyan); color: #fff; box-shadow: 0 4px 20px var(--cyan-glow); padding: 12px 30px; font-size: 1rem;}
+    .lsvt-wrapper .btn-primary:hover { background: var(--cyan-hover); transform: translateY(-2px); box-shadow: 0 6px 25px var(--cyan-glow); }
+    .lsvt-wrapper .btn-danger { background: rgba(255, 82, 82, 0.1); color: #ff5252; border: 1px solid rgba(255, 82, 82, 0.5); }
+    .lsvt-wrapper .btn-danger:hover { background: rgba(255, 82, 82, 0.2); border-color: #ff5252; box-shadow: 0 4px 15px rgba(255,82,82,0.3); }
+
+    /* Password Screen */
+    .lsvt-wrapper .auth-container {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        max-width: 400px; margin: 80px auto; text-align: center; padding: 40px 30px;
+        height: auto !important; /* Prevents stretching */
+    }
+    .lsvt-wrapper .auth-container i { font-size: 3rem; color: var(--cyan); margin-bottom: 20px; text-shadow: 0 0 20px var(--cyan-glow); }
+    .lsvt-wrapper .auth-container h2 { font-size: 1.8rem; margin-bottom: 15px; font-weight: 800; color: #fff; }
+    .lsvt-wrapper .auth-container p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem; }
+    .lsvt-wrapper .auth-form { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+    .lsvt-wrapper .auth-input {
+        width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.15);
+        color: var(--text-main); padding: 14px 20px; border-radius: 8px; font-family: inherit;
+        font-size: 1.1rem; text-align: center; font-weight: 600; letter-spacing: 2px;
+    }
+    .lsvt-wrapper .auth-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 15px var(--cyan-glow); }
+    .lsvt-wrapper .auth-error { color: #ff5252; font-size: 0.9rem; font-weight: 600; display: none; margin-top: 5px; }
+
+    /* Simulator Table */
+    .lsvt-wrapper .simulator-container {
+        flex: 1; border-radius: 12px; border: 1px solid var(--panel-border) !important;
+        background: rgba(0,0,0,0.4) !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.5) !important;
+        overflow: auto; max-height: calc(100vh - 250px);
+    }
+
+    .lsvt-wrapper .simulator-container::-webkit-scrollbar { width: 10px; height: 10px; }
+    .lsvt-wrapper .simulator-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 5px; }
+    .lsvt-wrapper .simulator-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; }
+    .lsvt-wrapper .simulator-container::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+    .lsvt-wrapper .data-table { width: max-content; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
+    .lsvt-wrapper .data-table th, .lsvt-wrapper .data-table td { padding: 10px 14px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.03); border-right: 1px solid rgba(255,255,255,0.02); }
+
+    /* Force colors overriding Webflow */
+    .lsvt-wrapper .data-table th { color: #ffffff !important; }
+    .lsvt-wrapper .data-table td { color: var(--text-main) !important; }
+
+    /* Freeze Headers */
+    .lsvt-wrapper .data-table thead th {
+        position: sticky; top: 0; z-index: 20; background: var(--header-bg) !important; font-weight: 800;
+        text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(255,255,255,0.2);
+        vertical-align: middle; line-height: 1.3;
+    }
+    .lsvt-wrapper .data-table tfoot td {
+        position: sticky; bottom: 0; z-index: 15; background: #0a1118 !important; font-weight: 900;
+        border-top: 2px solid var(--cyan); color: #fff !important; text-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+
+    /* Freeze First 2 Columns */
+    .lsvt-wrapper .data-table th:nth-child(1), .lsvt-wrapper .data-table td:nth-child(1) { position: sticky; left: 0; z-index: 10; text-align: left; background: #121820 !important; }
+    .lsvt-wrapper .data-table th:nth-child(2), .lsvt-wrapper .data-table td:nth-child(2) { position: sticky; left: 160px; z-index: 10; text-align: left; border-right: 2px solid rgba(255,255,255,0.1); background: #121820 !important; }
+    .lsvt-wrapper .data-table thead th:nth-child(1), .lsvt-wrapper .data-table thead th:nth-child(2) { z-index: 30; background: var(--header-bg) !important; }
+    .lsvt-wrapper .data-table tfoot td:nth-child(1) { z-index: 25; background: #0a1118 !important; }
+
+    /* Sticky Background Fix */
+    .lsvt-wrapper .data-table tr.even td:nth-child(1), .lsvt-wrapper .data-table tr.even td:nth-child(2) { background: #161c24 !important; }
+    .lsvt-wrapper .data-table tbody tr:hover td:nth-child(1), .lsvt-wrapper .data-table tbody tr:hover td:nth-child(2) { background: #1a222c !important; }
+    .lsvt-wrapper .data-table th:nth-child(1), .lsvt-wrapper .data-table th:nth-child(2) { background: var(--header-bg) !important; color: #fff !important; }
+
+    /* Inputs in table */
+    .lsvt-wrapper .cell-input {
+        width: 100%; min-width: 100px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+        color: var(--text-main); padding: 8px 10px; border-radius: 6px; font-family: inherit; font-size: 0.85rem; font-weight: 600;
+    }
+    .lsvt-wrapper select.cell-input { appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); background-repeat: no-repeat; background-position: right 8px center; padding-right: 25px; }
+    .lsvt-wrapper .cell-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 10px var(--cyan-glow); background: #000; }
+    .lsvt-wrapper select.cell-input option { background: #111; color: #fff; }
+    .lsvt-wrapper .input-sku { min-width: 130px; }
+    .lsvt-wrapper .input-month { min-width: 110px; }
+
+    /* Readonly visual */
+    .lsvt-wrapper .readonly-text { color: var(--cyan); font-weight: 700; font-size: 0.8rem; }
+    .lsvt-wrapper .val-eff-price { font-weight: 800; font-family: 'Courier New', monospace; color: #fff; }
+
+    /* Table Columns Styling */
+    .lsvt-wrapper .data-table th.col-sku { width: 160px; }
+    .lsvt-wrapper .data-table th.col-prod { width: 180px; }
+    .lsvt-wrapper .data-table th.col-month { width: 130px; text-align: center; }
+    .lsvt-wrapper .data-table th.col-cprice { width: 120px; }
+    .lsvt-wrapper .data-table th.col-eprice { width: 110px; }
+    .lsvt-wrapper .data-table th.col-cal { width: 95px; text-align: right; }
+    .lsvt-wrapper .data-table th.col-tot { width: 110px; background: rgba(39, 158, 216, 0.2) !important; color: #fff !important;}
+
+    /* Year Header Colors */
+    .lsvt-wrapper th.yr-0 { color: var(--yr-fg-1) !important; border-bottom-color: var(--yr-fg-1); }
+    .lsvt-wrapper th.yr-1 { color: var(--yr-fg-2) !important; border-bottom-color: var(--yr-fg-2); }
+    .lsvt-wrapper th.yr-2 { color: var(--yr-fg-3) !important; border-bottom-color: var(--yr-fg-3); }
+    .lsvt-wrapper th.yr-3 { color: var(--yr-fg-1) !important; border-bottom-color: var(--yr-fg-1); }
+
+    /* Cell Body Colors */
+    .lsvt-wrapper tr.even { background-color: var(--row-even); }
+    .lsvt-wrapper tr.odd { background-color: var(--row-odd); }
+    .lsvt-wrapper .val-cell { font-family: 'Courier New', monospace; font-weight: 600; color: #ddd !important; }
+    .lsvt-wrapper .val-cell.has-val { color: #fff !important; }
+    .lsvt-wrapper .cell-tot { background: rgba(39, 158, 216, 0.1) !important; font-weight: 800; font-family: 'Courier New', monospace; color: #fff !important; }
+    .lsvt-wrapper tr:hover { background-color: rgba(255,255,255,0.05); }
+
+    /* Utility */
+    .lsvt-hidden { display: none !important; }
+
+    /* Simple Mobile Adjustments */
+    @media (max-width: 1024px) {
+        .lsvt-wrapper .data-table th, .lsvt-wrapper .data-table td { padding: 8px 10px; font-size: 0.8rem; }
+    }
+
+    @media (max-width: 768px) {
+        .lsvt-wrapper .app-header .logo { flex-direction: column; gap: 5px; }
+        .lsvt-wrapper .app-header .app-subtitle { border-left: none; padding-left: 0; font-size: 1.4rem; }
+        .lsvt-wrapper .panel-header-flex { flex-direction: column; align-items: flex-start; }
+        
+        .lsvt-wrapper .simulator-container {
+            border-radius: 8px; border: none !important; background: transparent !important; box-shadow: none !important; overflow-x: hidden; max-height: none;
+        }
+        
+        .lsvt-wrapper .data-table, .lsvt-wrapper .data-table thead, .lsvt-wrapper .data-table tbody, .lsvt-wrapper .data-table tfoot, .lsvt-wrapper .data-table tr, .lsvt-wrapper .data-table td, .lsvt-wrapper .data-table th {
+            display: block; width: 100%; border: none;
+        }
+
+        .lsvt-wrapper .data-table thead tr { display: none; }
+        
+        .lsvt-wrapper .data-table tr {
+            background: rgba(15, 20, 25, 0.9) !important;
+            margin-bottom: 25px;
+            border: 1px solid var(--panel-border) !important;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        
+        .lsvt-wrapper .data-table td {
+            position: relative !important;
+            padding: 12px 15px 12px 45% !important;
+            text-align: right !important;
+            border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+            background: transparent !important; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 48px;
+        }
+        
+        .lsvt-wrapper .data-table td.val-cell:not(.has-val) { display: none; }
+
+        .lsvt-wrapper .data-table td:nth-child(1), .lsvt-wrapper .data-table td:nth-child(2), .lsvt-wrapper .data-table td:nth-child(3) {
+            left: auto !important;
+            border-right: none !important;
+        }
+
+        .lsvt-wrapper .data-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #fff !important;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            text-align: left;
+            width: 40%;
+            white-space: normal;
+            line-height: 1.1;
+        }
+
+        .lsvt-wrapper .cell-input { width: 100%; min-width: 0; text-align: right; }
+        .lsvt-wrapper select.cell-input { text-align: right; direction: rtl; } 
+        .lsvt-wrapper .input-sku, .lsvt-wrapper .input-month { width: 100%; }
+        
+        .lsvt-wrapper .data-table .cell-tot { background: rgba(39, 158, 216, 0.15) !important; }
+        
+        .lsvt-wrapper .data-table tfoot td { position: static; background: #0a1118 !important; }
+        .lsvt-wrapper .data-table tfoot td[colspan] { display: none; }
+    }
+    </style>
+
+    <!-- External dependencies -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="lsvt-wrapper">
+    <div class="app-bg-grid"></div>
+
+    <header class="app-header">
+        <div class="logo">
+            <img src="https://cdn.prod.website-files.com/6930bae240dc8297552369f3/69b320a3d655c8947d9cc7c9_logo.png" alt="Lightspeed VT" class="logo-img">
+            <span class="app-subtitle">SIMULATOR</span>
+        </div>
+        <div class="tagline">Pick a SKU and a Sale Month per row — commissions calculate automatically.</div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Password Screen -->
+        <section class="panel glass-panel auth-container" id="lsvt-auth-screen">
+            <i class="fa-solid fa-lock"></i>
+            <h2>RESTRICTED ACCESS</h2>
+            <p>Please enter the closer passcode to access the simulator.</p>
+            
+            <form id="lsvt-auth-form" class="auth-form">
+                <input type="password" id="lsvt-password" class="auth-input" placeholder="Enter password" required autofocus>
+                <div class="auth-error" id="lsvt-auth-error">Incorrect password. Please try again.</div>
+                <button type="submit" class="btn btn-primary">UNLOCK SIMULATOR</button>
+            </form>
+        </section>
+
+        <!-- Simulator Application -->
+        <section class="panel glass-panel lsvt-hidden" id="lsvt-main-app">
+            <div class="panel-header-flex">
+                <div class="header-info">
+                    <h2>COMMISSION <span>SIMULATOR v2</span></h2>
+                    <p id="calendar-info">📅 Calendar window: Loading...</p>
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn btn-danger" id="clear-btn">
+                        <i class="fa-solid fa-trash"></i> CLEAR INPUTS
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive simulator-container">
+                <table class="data-table simulator-table" id="simulator-table">
+                    <thead>
+                        <!-- Injected by JS -->
+                    </thead>
+                    <tbody>
+                        <!-- Injected by JS -->
+                    </tbody>
+                    <tfoot>
+                        <!-- Injected by JS -->
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+// ================================================================
+//  LSVT Commission Simulator — Webflow Embedded Logic
+// ================================================================
+
+(function() {
+    // --- AUTHENTICATION MODULE --- //
+    const CORRECT_PASSWORD = "LSVT";
+    
+    const authForm = document.getElementById('lsvt-auth-form');
+    const authInput = document.getElementById('lsvt-password');
+    const authError = document.getElementById('lsvt-auth-error');
+    const authScreen = document.getElementById('lsvt-auth-screen');
+    const mainApp = document.getElementById('lsvt-main-app');
+
+    authForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const pwd = authInput.value.trim().toUpperCase(); 
+        
+        if (pwd === CORRECT_PASSWORD) {
+            authScreen.classList.add('lsvt-hidden');
+            mainApp.classList.remove('lsvt-hidden');
+            initApp();
+        } else {
+            authError.style.display = 'block';
+            authInput.value = '';
+            authInput.focus();
+        }
+    });
+
+    authInput.addEventListener('input', () => {
+        authError.style.display = 'none';
+    });
+
+
+    // --- SIMULATOR MODULE --- //
+    // UPDATED PRODUCTS DICTIONARY
+    const PRODUCTS = {
+        'SPIN-M25': { label: 'Spin-Up Monthly, 25 users', type: 'monthly_flat',  price: 399   },
+        'SPIN-M50': { label: 'Spin-Up Monthly, 50 users', type: 'monthly_flat',  price: 499   },
+        'SPIN-A25': { label: 'Spin-Up Annual, 25 users',  type: 'annual_renew',  price: 3990  },
+        'SPIN-A50': { label: 'Spin-Up Annual, 50 users',  type: 'annual_renew',  price: 4990  },
+        'WGR-OT':   { label: 'White Glove Rollout',       type: 'onetime',       price: 3900, fixedCommission: 1000 },
+        'ITD-L1':   { label: 'ITD Level 1',               type: 'monthly_boost', price: 1500  },
+        'ITD-L2':   { label: 'ITD Level 2',               type: 'monthly_boost', price: 2500  },
+        'ITD-L3':   { label: 'ITD Level 3',               type: 'monthly_boost', price: 3500  },
+        'CR-L1':    { label: 'Course Credit L1',          type: 'onetime',       price: 2500  },
+        'CR-L2':    { label: 'Course Credit L2',          type: 'onetime',       price: 1500  },
+        'CR-L3':    { label: 'Course Credit L3',          type: 'onetime',       price: 1500  },
+    };
+      
+    const CFG = {
+        NUM_ROWS:   10,
+        INFO_COLS:  5,
+        CAL_MONTHS: 36,
+    };
+
+    let calStartDate = new Date();
+    let calendarMonths = [];
+    let simData = Array.from({ length: CFG.NUM_ROWS }, () => ({
+        sku: '', saleMonthStr: '', customPrice: ''
+    }));
+
+    const table = document.getElementById('simulator-table');
+    const thead = table.querySelector('thead');
+    const tbody = table.querySelector('tbody');
+    const tfoot = table.querySelector('tfoot');
+    const infoText = document.getElementById('calendar-info');
+
+    const moneyFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    
+    function fmtFull(d) {
+        const n = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${n[d.getMonth()]} ${d.getFullYear()}`;
+    }
+    
+    function fmtShort(d) {
+        const n = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return `${n[d.getMonth()]} '${String(d.getFullYear()).slice(2)}`;
+    }
+    
+    function parseFull(str) {
+        if (!str) return null;
+        const parts = str.toString().trim().split(' ');
+        if (parts.length !== 2) return null;
+        const MNAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const m = MNAMES.indexOf(parts[0]);
+        const y = parseInt(parts[1]);
+        return (m === -1 || isNaN(y)) ? null : new Date(y, m, 1);
+    }
+
+    // UPDATED COMMISSION RATE LOGIC
+    function getRate(month, type) {
+        if (type === 'onetime')      return month === 1 ? 0.20 : 0;
+        if (type === 'annual_renew') return month === 1 ? 0.10 : month === 13 ? 0.05 : 0;
+        if (type === 'monthly_flat') {
+            if (month <= 12) return 0.10;
+            if (month <= 18) return 0.05;
+            if (month <= 24) return 0.02;
+            return 0;
+        }
+        if (type === 'monthly_boost') {
+            if (month === 1)  return 0.20;
+            if (month <= 12)  return 0.10;
+            if (month <= 18)  return 0.05;
+            if (month <= 24)  return 0.02;
+            return 0;
+        }
+        return 0;
+    }
+
+    function initApp() {
+        const now = new Date();
+        calStartDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        
+        for (let i = 0; i < CFG.CAL_MONTHS; i++) {
+            calendarMonths.push(new Date(calStartDate.getFullYear(), calStartDate.getMonth() + i, 1));
+        }
+
+        const lastCal = fmtFull(calendarMonths[calendarMonths.length - 1]);
+        const d12 = new Date(calStartDate.getFullYear(), calStartDate.getMonth() + 12, 1);
+        infoText.textContent = `📅 Calendar window: ${fmtFull(calStartDate)} → ${lastCal} (Supports sale months up to ${fmtFull(d12)})`;
+
+        const defaultMonth = fmtFull(calStartDate);
+        simData.forEach(row => row.saleMonthStr = defaultMonth);
+
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            if(confirm('Clear all inputs?')) {
+                simData.forEach(row => { row.sku = ''; row.customPrice = ''; row.saleMonthStr = defaultMonth; });
+                renderGrid();
+            }
+        });
+
+        renderGrid();
+    }
+
+    function calcRowCommissions(rowIdx) {
+        const data = simData[rowIdx];
+        const vals = new Array(CFG.CAL_MONTHS).fill(0);
+        let total = 0;
+        let label = '';
+        let effPrice = 0;
+
+        if (data.sku && PRODUCTS[data.sku]) {
+            const p = PRODUCTS[data.sku];
+            label = p.label;
+            effPrice = (data.customPrice && !isNaN(data.customPrice) && Number(data.customPrice) > 0) ? Number(data.customPrice) : p.price;
+
+            const saleDate = parseFull(data.saleMonthStr) || calStartDate;
+            
+            for (let m = 1; m <= 24; m++) {
+                const commDate = new Date(saleDate.getFullYear(), saleDate.getMonth() + m - 1, 1);
+                const offset = (commDate.getFullYear() - calStartDate.getFullYear()) * 12 + (commDate.getMonth() - calStartDate.getMonth());
+                
+                if (offset >= 0 && offset < CFG.CAL_MONTHS) {
+                    const v = (p.fixedCommission && m === 1) ? p.fixedCommission : effPrice * getRate(m, p.type);
+                    if (v > 0) {
+                        vals[offset] += v;
+                        total += v;
+                    }
+                }
+            }
+        }
+
+        return { vals, total, label, effPrice };
+    }
+
+    function getColSummaries() {
+        const colTotals = new Array(CFG.CAL_MONTHS).fill(0);
+        let grandTotal = 0;
+
+        for (let r = 0; r < CFG.NUM_ROWS; r++) {
+            const rowCalc = calcRowCommissions(r);
+            rowCalc.vals.forEach((v, idx) => colTotals[idx] += v);
+            grandTotal += rowCalc.total;
+        }
+
+        return { colTotals, grandTotal };
+    }
+
+    function renderGrid() {
+        renderHeaders();
+        renderBody();
+        renderFooter();
+        bindEvents();
+    }
+
+    function renderHeaders() {
+        const years = [...new Set(calendarMonths.map(d => d.getFullYear()))].sort();
+        
+        let html = `<tr>
+            <th class="col-sku">SKU</th>
+            <th class="col-prod">Product (Auto)</th>
+            <th class="col-month">Sale Month</th>
+            <th class="col-cprice">Custom Price ($)</th>
+            <th class="col-eprice">Eff. Price</th>
+        `;
+
+        calendarMonths.forEach((cm) => {
+            const yrIdx = years.indexOf(cm.getFullYear());
+            html += `<th class="col-cal yr-${yrIdx}">${fmtShort(cm)}</th>`;
+        });
+
+        html += `<th class="col-tot">TOTAL</th></tr>`;
+        thead.innerHTML = html;
+    }
+
+    function renderBody() {
+        const years = [...new Set(calendarMonths.map(d => d.getFullYear()))].sort();
+        
+        let skuOpts = `<option value="">-- Select --</option>`;
+        Object.keys(PRODUCTS).forEach(k => skuOpts += `<option value="${k}">${k}</option>`);
+
+        let monthOpts = '';
+        for (let i = 0; i <= 12; i++) {
+            const d = new Date(calStartDate.getFullYear(), calStartDate.getMonth() + i, 1);
+            monthOpts += `<option value="${fmtFull(d)}">${fmtFull(d)}</option>`;
+        }
+
+        let html = '';
+        for (let r = 0; r < CFG.NUM_ROWS; r++) {
+            const data = simData[r];
+            const calc = calcRowCommissions(r);
+            const stripe = r % 2 === 0 ? 'even' : 'odd';
+
+            const rSkuOpts = skuOpts.replace(`value="${data.sku}"`, `value="${data.sku}" selected`);
+            const rMoOpts = monthOpts.replace(`value="${data.saleMonthStr}"`, `value="${data.saleMonthStr}" selected`);
+
+            html += `<tr class="${stripe}" data-row="${r}">
+                <td data-label="SKU"><select class="cell-input input-sku in-sku">${rSkuOpts}</select></td>
+                <td data-label="PRODUCT"><div class="readonly-text">${calc.label}</div></td>
+                <td data-label="SALE MONTH" style="text-align:center;"><select class="cell-input input-month in-month">${rMoOpts}</select></td>
+                <td data-label="CUSTOM"><input type="number" class="cell-input in-cprice" step="0.01" min="0" value="${data.customPrice}"></td>
+                <td data-label="EFF. PRICE" class="val-eff-price">${calc.effPrice > 0 ? moneyFmt.format(calc.effPrice) : '-'}</td>
+            `;
+
+            calendarMonths.forEach((cm, idx) => {
+                const v = calc.vals[idx];
+                html += `<td data-label="${fmtShort(cm)}" class="val-cell ${v > 0 ? 'has-val' : ''}">${v > 0 ? moneyFmt.format(v) : ''}</td>`;
+            });
+
+            html += `<td data-label="ROW TOTAL" class="cell-tot">${calc.total > 0 ? moneyFmt.format(calc.total) : ''}</td></tr>`;
+        }
+        
+        tbody.innerHTML = html;
+    }
+
+    function renderFooter() {
+        const sums = getColSummaries();
+        
+        let html = `<tr>
+            <td colspan="5" style="text-align:right; padding-right:20px;">GRAND TOTAL</td>
+        `;
+
+        sums.colTotals.forEach((v, idx) => {
+            const cm = calendarMonths[idx];
+            html += `<td data-label="TOTAL ${fmtShort(cm)}" class="val-cell ${v>0? 'has-val':''}">${v > 0 ? moneyFmt.format(v) : ''}</td>`;
+        });
+
+        html += `<td data-label="GRAND TOTAL" class="cell-tot">${sums.grandTotal > 0 ? moneyFmt.format(sums.grandTotal) : ''}</td></tr>`;
+        tfoot.innerHTML = html;
+    }
+
+    function bindEvents() {
+        const rows = tbody.querySelectorAll('tr');
+        rows.forEach(tr => {
+            const rIdx = parseInt(tr.dataset.row);
+            
+            tr.querySelector('.in-sku').addEventListener('change', (e) => {
+                simData[rIdx].sku = e.target.value;
+                triggerUpdate();
+            });
+            
+            tr.querySelector('.in-month').addEventListener('change', (e) => {
+                simData[rIdx].saleMonthStr = e.target.value;
+                triggerUpdate();
+            });
+            
+            tr.querySelector('.in-cprice').addEventListener('input', (e) => {
+                simData[rIdx].customPrice = e.target.value;
+                triggerUpdate();
+            });
+        });
+    }
+
+    function triggerUpdate() {
+        for(let r=0; r < CFG.NUM_ROWS; r++) {
+            const calc = calcRowCommissions(r);
+            const tr = tbody.querySelector(`tr[data-row="${r}"]`);
+            
+            tr.querySelector('.readonly-text').textContent = calc.label;
+            tr.querySelector('.val-eff-price').textContent = calc.effPrice > 0 ? moneyFmt.format(calc.effPrice) : '-';
+            
+            const valCells = tr.querySelectorAll('.val-cell');
+            calc.vals.forEach((v, idx) => {
+                valCells[idx].textContent = v > 0 ? moneyFmt.format(v) : '';
+                if(v > 0) valCells[idx].classList.add('has-val');
+                else valCells[idx].classList.remove('has-val');
+            });
+            
+            tr.querySelector('.cell-tot').textContent = calc.total > 0 ? moneyFmt.format(calc.total) : '';
+        }
+
+        renderFooter();
+    }
+
+})();
+</script>
+</body>
+</html>

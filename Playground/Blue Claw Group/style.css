@@ -1,0 +1,658 @@
+/* ==========================================
+   Base & Reset - Rugged Premium Edition
+========================================== */
+:root {
+    --bg-base: #0c0f14;
+    --bg-paper: #161a22;
+    --bg-blueprint: #0f1c32;
+    
+    --brand-blue: #1d4ed8;
+    --brand-blue-dark: #1e3a8a;
+    --brand-accent: #f59e0b; /* Safety Orange/Yellow */
+    
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --text-blueprint: #60a5fa;
+    
+    --border-metal: #334155;
+    --border-blueprint: rgba(59, 130, 246, 0.3);
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    --shadow-heavy: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    --shadow-float: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 100% 0%, rgba(29, 78, 216, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 0% 100%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+}
+
+a {
+    text-decoration: none;
+    color: var(--brand-accent);
+    transition: all 0.2s ease;
+}
+
+.container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ==========================================
+   Typography & Accents
+========================================== */
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+/* Rugged Textured Text */
+.hero-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 1.05;
+    margin-bottom: 24px;
+    color: #fff;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.hero-title span {
+    display: inline-block;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--text-main);
+    background-image: linear-gradient(135deg, var(--brand-accent) 0%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0px;
+}
+
+.section-title {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--brand-accent);
+}
+
+.text-center .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ==========================================
+   Industrial Buttons
+========================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 4px; /* Harder edges for contractor feel */
+}
+
+.btn-primary {
+    background: var(--brand-accent);
+    color: #000;
+    border: 2px solid var(--brand-accent);
+    box-shadow: 4px 4px 0 rgba(245, 158, 11, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(245, 158, 11, 0.4);
+}
+
+.btn-primary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-main);
+    border: 2px solid var(--border-metal);
+}
+.btn-outline:hover {
+    border-color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================
+   Header
+========================================== */
+.site-header {
+    padding: 24px 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 48px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.nav-links a:not(.btn) {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.9rem; letter-spacing: 1px;
+}
+.nav-links a:not(.btn):hover {
+    color: var(--brand-accent);
+}
+
+/* ==========================================
+   Hero Blueprint Section
+========================================== */
+.hero {
+    min-height: 100vh;
+    padding: 160px 0 80px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Blueprint Pattern Background */
+.blueprint-bg {
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 800px;
+    height: 800px;
+    background-color: var(--bg-blueprint);
+    background-image: 
+        linear-gradient(var(--border-blueprint) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-blueprint) 1px, transparent 1px),
+        linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(20px);
+    transform: rotate(15deg);
+    opacity: 0.5;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.project-stamp {
+    display: inline-block;
+    border: 2px solid var(--border-metal);
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+    background: rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 48px;
+    max-width: 90%;
+    border-left: 4px solid var(--border-metal);
+    padding-left: 16px;
+}
+
+.hero-ctas {
+    display: flex;
+    gap: 24px;
+}
+
+/* 3D Clipboard / Tablet Visual */
+.hero-visual {
+    perspective: 1200px;
+}
+
+.tactical-board {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 600px;
+    background: #111;
+    border: 4px solid #333;
+    border-radius: 12px;
+    transform: rotateX(10deg) rotateY(-20deg) rotateZ(5deg);
+    transform-style: preserve-3d;
+    box-shadow: 
+        -20px 20px 0 rgba(0,0,0,0.8),
+        inset 0 0 50px rgba(0,0,0,0.9);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.tactical-board:hover {
+    transform: rotateX(5deg) rotateY(-10deg) rotateZ(2deg) translateY(-20px);
+}
+
+.board-clip {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 40px;
+    background: linear-gradient(to bottom, #cfd8dc, #90a4ae);
+    border-radius: 4px;
+    border: 2px solid #546e7a;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+.board-paper {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: #f8fafc;
+    border-radius: 4px;
+    padding: 30px 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+.paper-grid {
+    background-image: linear-gradient(#e2e8f0 1px, transparent 1px),
+                      linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+    background-size: 20px 20px;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.paper-content {
+    position: relative;
+    z-index: 1;
+    font-family: 'Courier New', monospace;
+    color: #1e293b;
+}
+
+.job-spec {
+    border-bottom: 2px solid #94a3b8;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.job-spec h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.data-alert {
+    background: #fee2e2;
+    border-left: 4px solid #ef4444;
+    padding: 12px;
+    margin-top: 24px;
+    color: #991b1b;
+    font-weight: bold;
+}
+
+.stamp-red {
+    position: absolute;
+    bottom: 40px;
+    right: 20px;
+    color: #ef4444;
+    border: 3px solid #ef4444;
+    padding: 10px 20px;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    transform: rotate(-15deg);
+    opacity: 0.7;
+    border-radius: 4px;
+}
+
+/* Floating 3D Elements around board */
+.float-tool {
+    position: absolute;
+    background: var(--bg-paper);
+    border: 2px solid var(--border-metal);
+    padding: 16px;
+    color: white;
+    font-family: var(--font-heading);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 5;
+    box-shadow: var(--shadow-heavy);
+}
+
+.tape-measure {
+    bottom: -30px;
+    left: -40px;
+    transform: translateZ(100px) rotate(10deg);
+    border-top: 4px solid #f59e0b;
+}
+
+.marker {
+    top: 50px;
+    right: -50px;
+    transform: translateZ(80px) rotate(-15deg);
+    border-left: 4px solid #3b82f6;
+}
+
+/* ==========================================
+   Founder "From the Dirt" Section
+========================================== */
+.founder-section {
+    padding: 120px 0;
+    background: #0f172a;
+    border-top: 1px solid var(--border-metal);
+    border-bottom: 1px solid var(--border-metal);
+}
+
+.founder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.polaroid-frame {
+    background: #fff;
+    padding: 16px 16px 60px 16px;
+    box-shadow: var(--shadow-float);
+    transform: rotate(-3deg);
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.polaroid-photo {
+    width: 100%;
+    aspect-ratio: 4/4;
+    background: #1e293b; /* Placeholder for actual founder photo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.polaroid-photo::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+}
+
+.photo-logo {
+    width: 50%;
+    filter: brightness(0) invert(1) opacity(0.3);
+}
+
+.polaroid-caption {
+    font-family: 'Courier New', monospace;
+    color: #0f172a;
+    font-weight: bold;
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    width: calc(100% - 32px);
+    font-size: 1.2rem;
+}
+
+.founder-content .section-title {
+    margin-bottom: 32px;
+}
+
+.founder-content p {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.founder-content strong {
+    color: white;
+}
+
+/* ==========================================
+   The Hardware (Features)
+========================================== */
+.hardware-section {
+    padding: 120px 0;
+}
+
+.hardware-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 60px;
+}
+
+.hardware-card {
+    background: var(--bg-paper);
+    border: 1px solid var(--border-metal);
+    padding: 40px 32px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.hardware-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--border-metal);
+    transition: background 0.3s ease;
+}
+
+.hardware-card:hover {
+    transform: translateY(-8px);
+}
+
+.hardware-card:hover::before {
+    background: var(--brand-accent);
+}
+
+.card-number {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.05);
+    position: absolute;
+    top: 20px; right: 20px;
+    line-height: 1;
+}
+
+.hardware-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+    color: white;
+    position: relative;
+    z-index: 10;
+}
+
+.hardware-card p {
+    color: var(--text-muted);
+    position: relative;
+    z-index: 10;
+}
+
+/* ==========================================
+   Comparison (The Difference)
+========================================== */
+.comparison-section {
+    padding: 120px 0;
+    background: #0f172a;
+}
+
+.compare-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    max-width: 1000px;
+    margin: 60px auto 0;
+    border: 4px solid #1e293b;
+}
+
+.compare-side {
+    padding: 60px 40px;
+}
+
+.side-weak {
+    background: #0f172a;
+}
+
+.side-strong {
+    background: var(--brand-blue-dark);
+    position: relative;
+}
+
+.side-strong::before {
+    content: 'STANDARD';
+    position: absolute;
+    top: 10px; right: 10px;
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 4rem;
+    color: rgba(255,255,255,0.05);
+}
+
+.compare-side h3 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.side-weak h3 { color: #94a3b8; }
+.side-strong h3 { color: #fff; }
+
+.compare-list li {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.side-weak li { color: #64748b; }
+.side-strong li { color: #e2e8f0; }
+
+.icon-x { color: #ef4444; font-weight: bold; }
+.icon-check { color: var(--brand-accent); font-weight: bold; }
+
+/* ==========================================
+   Footer & CTA
+========================================== */
+.footer-cta {
+    padding: 140px 0;
+    background: radial-gradient(circle at center, #1e3a8a 0%, #0c0f14 80%);
+    text-align: center;
+    border-top: 4px solid var(--brand-accent);
+}
+
+.price-tag {
+    display: inline-block;
+    background: #000;
+    padding: 24px 48px;
+    border: 2px solid var(--brand-accent);
+    margin: 40px 0;
+    transform: rotate(-2deg);
+}
+
+.price-strike {
+    color: #ef4444;
+    text-decoration: line-through;
+    font-size: 1.25rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.price-main {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--brand-accent);
+    line-height: 1;
+}
+
+.footer-nav {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+@media (max-width: 900px) {
+    .hero-grid, .founder-grid, .compare-container {
+        grid-template-columns: 1fr;
+    }
+    .hero-title { font-size: 3.5rem; }
+    .tactical-board { transform: none !important; }
+    .hero { padding-top: 120px; }
+    .blueprint-bg { display: none; }
+}
